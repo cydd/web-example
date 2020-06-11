@@ -1,0 +1,48 @@
+<nz-layout>
+    <nz-content class="outer-content">
+      <nz-breadcrumb>
+        <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+        <nz-breadcrumb-item>Dashboard</nz-breadcrumb-item>
+      </nz-breadcrumb>
+    <nz-layout class="inner-layout">
+      <nz-sider nzWidth="200px" nzTheme="light">
+        <ul nz-menu nzMode="inline" class="sider-menu">
+  
+          <li nz-menu-item nzMatchRouter><i nz-icon nzType="dashboard"></i>
+            <span>Dashboard</span><a [routerLink]="['/', 'dashboard']"></a></li>
+          <li nz-menu-item nzMatchRouter><i nz-icon nzType="mail"></i>
+            <span>私信</span><a [routerLink]="['/', 'message']"></a></li>
+          <li nz-menu-item><i nz-icon nzType="logout"></i>
+            <span>注销</span><a (click)="logout()"></a></li>
+  
+        </ul>
+      </nz-sider>
+    <nz-content class="inner-content">
+
+      <div nz-row [nzGutter]="8">
+        <div nz-col [nzSpan]="8">
+          <nz-card nzTitle="待补充">
+            <p>私信界面</p>
+            <p>golang websocket</p>
+            <p>angular websocket</p>
+            <p>反代reCAPTCHA?</p>
+            <p>加载动画？</p>
+          </nz-card>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <nz-card nzTitle="测试">
+            <p>默认创建管理员账号</p>
+            <p>非管理员账号全部跳转至/dashboard</p>
+            <p>非管理员：JasonWood</p>
+            <p>密码：123456</p>
+          </nz-card>
+        </div>
+        <div nz-col [nzSpan]="8">
+          <nz-card nzTitle="存在问题">
+            <p><del>登录后不刷新无法加载userlist</del></p>
+          </nz-card>
+        </div>
+      </div>
+
+    </nz-content>
+</nz-layout>

@@ -1,0 +1,6 @@
+{
+  "/recaptcha": {
+    "target": "https://www.google.com/",
+    "secure": false
+  }
+}

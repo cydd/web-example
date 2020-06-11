@@ -1,0 +1,144 @@
+<nz-row nzType='flex' nzJustify='center' nzAlign="middle">
+  <nz-card style="width:500px;" [nzBordered]="false" nzTitle="register works!" >
+
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <!-- 用户名 -->
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="UserName" nzRequired>用户名</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="userError">
+          <input nz-input
+          id="UserName"
+          formControlName="UserName"
+          />
+        </nz-form-control>
+        <ng-template #userError let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            用户名是必要的
+          </ng-container>
+          <ng-container *ngIf="control.hasError('duplicated')">
+            已存在的用户名
+          </ng-container>
+          <ng-container *ngIf="control.hasError('checkC')">
+            用户名不符合Ｃ语言变量命名规则
+          </ng-container>
+        </ng-template>
+      </nz-form-item>
+
+    <!-- 邮箱 -->
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">E-mail</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="emailError">
+        <input nz-input
+        formControlName="email"
+        id="email"
+        />
+      </nz-form-control>
+      <ng-template #emailError let-control>
+        <ng-container *ngIf="control.hasError('required')">
+          邮箱是必要的
+        </ng-container>
+        <ng-container *ngIf="control.hasError('email')">
+          邮箱格式不正确
+        </ng-container>
+        <ng-container *ngIf="control.hasError('duplicated')">
+          已存在的邮箱
+        </ng-container>
+      </ng-template>
+    </nz-form-item>
+    
+    <!-- 手机号 -->
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="phoneNumber" nzRequired>手机号</nz-form-label>
+        <nz-form-control
+          [nzSm]="14"
+          [nzXs]="24"
+          [nzValidateStatus]="validateForm.controls['phoneNumber']"
+          nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="phoneNumberError"
+        >
+          <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate">
+            <ng-template #addOnBeforeTemplate>
+              <nz-select formControlName="phoneNumberPrefix" class="phone-select">
+                <nz-option nzLabel="+86" nzValue="+86"></nz-option>
+              </nz-select>
+            </ng-template>
+            <input nz-input #phoneNumber
+            formControlName="phoneNumber"
+            id="'phoneNumber'"
+            />
+          </nz-input-group>
+        </nz-form-control>
+        <ng-template #phoneNumberError let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            手机号是必要的
+          </ng-container>
+          <ng-container *ngIf="control.hasError('duplicated')">
+            已存在的手机号
+          </ng-container>
+          <ng-container *ngIf="control.hasError('phoneNumber')">
+            手机号格式不正确
+          </ng-container>
+        </ng-template>
+      </nz-form-item>
+
+    <!-- 密码 -->
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="Password" nzRequired>密码</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzErrorTip="必须输入密码且不少于6位">
+        <input nz-input #password
+          type="password"
+          id="Password"
+          formControlName="Password"
+          minlength="6" 
+        />
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- 确认密码 -->
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword" nzRequired>确认密码</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback [nzErrorTip]="confirmError">
+        <input nz-input #checkpassword
+        type="password"
+        formControlName="checkPassword"
+        id="checkPassword" />
+        <ng-template #confirmError let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            再确认一次密码
+          </ng-container>
+          <ng-container *ngIf="control.hasError('confirm')">
+            两次输入的密码不相同
+          </ng-container>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-row nzType='flex' nzJustify='center' nzAlign="middle">
+      <re-captcha (resolved)="resolved($event)" siteKey="6Ld6Y3sUAAAAALp9cPP0Klpd-YX7Aufyjw0QUzpS"></re-captcha>
+    </nz-row>
+    </nz-form-item>
+
+    <!-- TOS -->
+    <nz-form-item nz-row class="register-area">
+      <nz-form-control [nzSpan]="14" [nzOffset]="6" nzFor="agree"  nzErrorTip="必须同意暂时没写的TOS">
+        <label #TOS nz-checkbox formControlName="agree" id="TOS">
+          <span>I have read the <a>agreement</a></span>
+        </label>
+      </nz-form-control>
+    </nz-form-item>
+
+    <!-- 注册 -->
+    <nz-form-item nz-row class="register-area">
+      <nz-form-control [nzSpan]="14" [nzOffset]="6">
+        <button nz-button nzType="primary" (click)= "register()">
+          Register</button>
+          <div class="textcenter">
+            已有账号？
+          <a routerLink="/login">登录</a></div>
+      </nz-form-control>
+    </nz-form-item>
+
+
+  </form>
+</nz-card>
+</nz-row>

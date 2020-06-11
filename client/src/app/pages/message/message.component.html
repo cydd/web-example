@@ -1,0 +1,72 @@
+<nz-layout>
+    <nz-content class="outer-content">
+      <nz-breadcrumb>
+        <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+        <nz-breadcrumb-item>Dashboard</nz-breadcrumb-item>
+      </nz-breadcrumb>
+    <nz-layout class="inner-layout">
+      <nz-sider nzWidth="200px" nzTheme="light">
+        <ul nz-menu nzMode="inline" class="sider-menu">
+  
+          <li nz-menu-item nzMatchRouter><i nz-icon nzType="dashboard"></i>
+            <span>Dashboard</span><a [routerLink]="['/', 'dashboard']"></a></li>
+          <li nz-menu-item nzMatchRouter><i nz-icon nzType="mail"></i>
+            <span>私信</span><a [routerLink]="['/', 'message']"></a></li>
+          <li nz-menu-item><i nz-icon nzType="logout"></i>
+            <span>注销</span><a (click)="logout()"></a></li>
+  
+        </ul>
+      </nz-sider>
+    <nz-content class="inner-content">
+      <nb-layout>
+        <nb-layout-column>
+          <nz-card>
+            <nz-list
+            class="userlist"
+            [nzDataSource]="list"
+            [nzItemLayout]="'horizontal'"
+            [nzLoading]="initLoading"
+            [nzRenderItem]="item">
+              <ng-template
+               #item let-item>
+               <div *ngIf='item.username!=this.service.getusername()'>
+                <nz-list-item [nzActions]="item.loading ? [] : [chatAction]">
+                  <nz-skeleton [nzActive]="true" [nzTitle]="false" [nzLoading]="item.loading">
+                    <ng-template #chatAction><a (click)="chat(item)">私信</a></ng-template>
+                    <nz-list-item-meta
+                    [nzTitle]="username"
+                    nzAvatar="https://i.gifer.com/no.gif">
+                    <ng-template #username>
+                      
+                      <nz-descriptions [nzTitle]="item.username"></nz-descriptions>
+                    </ng-template>
+                    </nz-list-item-meta>
+                  </nz-skeleton>
+                </nz-list-item>
+              </div>
+              </ng-template
+              >
+            </nz-list>
+          </nz-card>
+        </nb-layout-column>
+        <nb-layout-column>
+      <nb-chat class="nb-chat" [title]="chatTitle" size="large">
+        <nb-chat-message *ngFor="let msg of messages"
+                         [type]="msg.type"
+                         [message]="msg.text"
+                         [reply]="msg.reply"
+                         [sender]="msg.user.name"
+                         [date]="msg.date"
+                         [files]="msg.files"
+                         [quote]="msg.quote"
+                         [latitude]="msg.latitude"
+                         [longitude]="msg.longitude"
+                         [avatar]="msg.user.avatar">
+        </nb-chat-message>
+        <nb-chat-form (send)="sendMessage($event)" [dropFiles]="true">
+        </nb-chat-form>
+      </nb-chat>
+      </nb-layout-column>
+      </nb-layout>
+    </nz-content>
+</nz-layout>

@@ -1,0 +1,153 @@
+<nz-layout>
+  <nz-content class="outer-content">
+    <nz-breadcrumb>
+      <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+      <nz-breadcrumb-item>userMgr</nz-breadcrumb-item>
+      <nz-breadcrumb-item>adduser</nz-breadcrumb-item>
+    </nz-breadcrumb>
+  <nz-layout class="inner-layout">
+    <nz-sider nzWidth="200px" nzTheme="light">
+      <ul nz-menu nzMode="inline" class="sider-menu">
+
+        <li nz-menu-item><i nz-icon nzType="dashboard"></i>
+          <span>Dashboard</span><a [routerLink]="['/', 'userMgr', 'dashboard']"></a></li>
+        <li nz-submenu nzOpen nzTitle="用户管理" nzIcon="user">
+          <ul>
+            <li nz-menu-item nzMatchRouter><i nz-icon nzType="user"></i>
+              <span>用户列表</span><a [routerLink]="['/', 'userMgr', 'userlist']"></a>
+            </li>
+            <li nz-menu-item nzMatchRouter nzSelected><i nz-icon nzType="user-add"></i>
+              <span>添加用户</span><a [routerLink]="['/', 'userMgr', 'adduser']"></a></li>
+          </ul>
+        </li>
+
+        <li nz-menu-item><i nz-icon nzType="logout"></i>
+          <span>注销</span><a (click)="logout()"></a></li>
+
+      </ul>
+    </nz-sider>
+  <nz-content class="inner-content">
+<nz-row nzType='flex' nzJustify='center' nzAlign="middle">
+    <nz-card style="width:600px;" [nzBordered]="false" nzTitle="添加用户" >
+  
+  <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+      <!-- 用户名 -->
+      <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="UserName" nzRequired>用户名</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="userError">
+            <input nz-input
+            id="UserName"
+            formControlName="UserName"
+            />
+          </nz-form-control>
+          <ng-template #userError let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              用户名是必要的
+            </ng-container>
+            <ng-container *ngIf="control.hasError('duplicated')">
+              已存在的用户名
+            </ng-container>
+          </ng-template>
+        </nz-form-item>
+  
+      <!-- 邮箱 -->
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">E-mail</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="emailError">
+          <input nz-input
+          formControlName="email"
+          id="email"
+          />
+        </nz-form-control>
+        <ng-template #emailError let-control>
+          <ng-container *ngIf="control.hasError('required')">
+            邮箱是必要的
+          </ng-container>
+          <ng-container *ngIf="control.hasError('email')">
+            邮箱格式不正确
+          </ng-container>
+          <ng-container *ngIf="control.hasError('duplicated')">
+            已存在的邮箱
+          </ng-container>
+        </ng-template>
+      </nz-form-item>
+      
+      <!-- 手机号 -->
+      <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="phoneNumber" nzRequired>手机号</nz-form-label>
+          <nz-form-control
+            [nzSm]="14"
+            [nzXs]="24"
+            [nzValidateStatus]="validateForm.controls['phoneNumber']"
+            nzHasFeedback nzValidatingTip="Validating..." [nzErrorTip]="phoneNumberError"
+          >
+            <nz-input-group [nzAddOnBefore]="addOnBeforeTemplate">
+              <ng-template #addOnBeforeTemplate>
+                <nz-select formControlName="phoneNumberPrefix" class="phone-select">
+                  <nz-option nzLabel="+86" nzValue="+86"></nz-option>
+                </nz-select>
+              </ng-template>
+              <input nz-input #phoneNumber
+              formControlName="phoneNumber"
+              id="'phoneNumber'"
+              />
+            </nz-input-group>
+          </nz-form-control>
+          <ng-template #phoneNumberError let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              手机号是必要的
+            </ng-container>
+            <ng-container *ngIf="control.hasError('duplicated')">
+              已存在的手机号
+            </ng-container>
+            <ng-container *ngIf="control.hasError('phoneNumber')">
+              手机号格式不正确
+            </ng-container>
+          </ng-template>
+        </nz-form-item>
+  
+      <!-- 密码 -->
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="Password" nzRequired>密码</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzErrorTip="必须输入密码且不少于6位">
+          <input nz-input #password
+            type="password"
+            id="Password"
+            formControlName="Password"
+            minlength="6" 
+          />
+        </nz-form-control>
+      </nz-form-item>
+  
+      <!-- 确认密码 -->
+      <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword" nzRequired>确认密码</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback [nzErrorTip]="confirmError">
+          <input nz-input #checkpassword
+          type="password"
+          formControlName="checkPassword"
+          id="checkPassword" />
+          <ng-template #confirmError let-control>
+            <ng-container *ngIf="control.hasError('required')">
+              再确认一次密码
+            </ng-container>
+            <ng-container *ngIf="control.hasError('confirm')">
+              两次输入的密码不相同
+            </ng-container>
+          </ng-template>
+        </nz-form-control>
+      </nz-form-item>
+  
+      <!-- 添加 -->
+      <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button nz-button nzType="primary" (click)="add()">添加</button>
+            <button nz-button nzType="default" (click)="cancel()">取消</button>
+        </nz-form-control>
+      </nz-form-item>
+  
+    </form>
+  </nz-card>
+</nz-row>
+</nz-content>
+</nz-layout>

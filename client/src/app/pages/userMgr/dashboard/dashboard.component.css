@@ -1,0 +1,37 @@
+.userlist {
+    min-height: 350px;
+  }
+
+  [nz-form] {
+    max-width: 600px;
+  }
+
+  [nz-button] {
+    margin-right: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .phone-select {
+    width: 70px;
+  }
+  .outer-content {
+    padding: 0 50px;
+  }
+  
+  nz-breadcrumb {
+    margin: 16px 0;
+  }
+  
+  .inner-layout {
+    padding: 24px 0;
+    background: #fff;
+  }
+  
+  .sider-menu {
+    height: 100%;
+  }
+  
+  .inner-content {
+    padding: 0 24px;
+    min-height: 470px;
+  }

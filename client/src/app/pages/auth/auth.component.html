@@ -1,0 +1,45 @@
+<nz-row nzType='flex' nzJustify='center' nzAlign="middle">
+<nz-card style="width:350px;" [nzBordered]="false" nzTitle="auth works!" >
+<form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your username!">
+        <nz-input-group nzPrefixIcon="user">
+          <input
+          type="text"
+          nz-input
+          placeholder="Username"
+          nz-input formControlName="userName"
+        />
+        </nz-input-group>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control nzErrorTip="Please input your Password!">
+        <nz-input-group nzPrefixIcon="lock" [nzSuffix]="suffixTemplate">
+            <input
+              [type]="passwordVisible ? 'text' : 'password'"
+              nz-input
+              placeholder="Password"
+              nz-input formControlName="passWord"
+            />
+        </nz-input-group>
+        <ng-template #suffixTemplate>
+          <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></i>
+        </ng-template>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <re-captcha (resolved)="resolved($event)" siteKey="6Ld6Y3sUAAAAALp9cPP0Klpd-YX7Aufyjw0QUzpS"></re-captcha>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-control>
+        <a class="login-form-forgot" class="login-form-forgot">Forgot password?</a>
+        <button nz-button class="login-form-button" [nzType]="'primary'" (click)="auth()">Log in</button>
+        <div class="textcenter">
+        Or
+        <a routerLink="/register">register now!</a></div>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</nz-card>
+</nz-row>

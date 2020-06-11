@@ -1,0 +1,110 @@
+<nz-layout>
+  <nz-content class="outer-content">
+    <nz-breadcrumb>
+      <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+      <nz-breadcrumb-item>userMgr</nz-breadcrumb-item>
+      <nz-breadcrumb-item>userlist</nz-breadcrumb-item>
+    </nz-breadcrumb>
+  <nz-layout class="inner-layout">
+    <nz-sider nzWidth="200px" nzTheme="light">
+      <ul nz-menu nzMode="inline" class="sider-menu">
+
+        <li nz-menu-item><i nz-icon nzType="dashboard"></i>
+          <span>Dashboard</span><a [routerLink]="['/', 'userMgr', 'dashboard']"></a></li>
+        <li nz-submenu nzOpen nzTitle="用户管理" nzIcon="user">
+          <ul>
+            <li nz-menu-item nzMatchRouter nzSelected><i nz-icon nzType="user"></i>
+              <span>用户列表</span><a [routerLink]="['/', 'userMgr', 'userlist']"></a>
+            </li>
+            <li nz-menu-item nzMatchRouter><i nz-icon nzType="user-add"></i>
+              <span>添加用户</span><a [routerLink]="['/', 'userMgr', 'adduser']"></a></li>
+          </ul>
+        </li>
+
+        <li nz-menu-item ><i nz-icon nzType="logout"></i>
+          <span>注销</span><a (click)="logout()"></a></li>
+
+      </ul>
+    </nz-sider>
+  <nz-content class="inner-content">
+    <div *ngIf="!editor; else editortemplate">
+      <p>>UserList</p>
+      <nz-list
+      class="userlist"
+      [nzDataSource]="list"
+      [nzItemLayout]="'horizontal'"
+      [nzLoading]="initLoading"
+      [nzRenderItem]="item">
+        <ng-template #item let-item>
+          <nz-list-item
+          [nzActions]="item.loading ? [] : [editAction, deleteAction]">
+            <nz-skeleton [nzActive]="true" [nzTitle]="false" [nzLoading]="item.loading">
+              <ng-template #editAction><a (click)="edit(item)">修改</a></ng-template>
+              <ng-template #deleteAction><a (click)="delete(item)">删除</a></ng-template>
+              <nz-list-item-meta
+              [nzTitle]="username"
+              nzAvatar="https://s2.ax1x.com/2020/01/12/lTa1KA.gif">
+              <ng-template #username>
+                <nz-descriptions [nzTitle]="item.username">
+                <nz-descriptions-item nzTitle="Email">{{item.email}}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="手机号">+86 {{item.phonenumber}}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="管理员">{{item.isAdmin}}</nz-descriptions-item></nz-descriptions>
+              </ng-template>
+              </nz-list-item-meta>
+            </nz-skeleton>
+          </nz-list-item>
+        </ng-template>
+      </nz-list>
+    </div>
+
+    <ng-template #editortemplate>
+      <nz-row nzType='flex' nzJustify='center' nzAlign="middle">
+        <nz-card style="width:600px;" [nzBordered]="false" nzTitle="修改用户" >
+          <form nz-form>
+            <nz-form-item>
+              <nz-form-label [nzSpan]="5">用户名</nz-form-label>
+              <nz-form-control [nzSpan]="17">
+                <input nz-input [(ngModel)]="editorInfo.username" [ngModelOptions]="{standalone: true}" [disabled]="true" />
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label [nzSpan]="5">Email</nz-form-label>
+              <nz-form-control [nzSpan]="17">
+                <input nz-input [(ngModel)]="editorInfo.email" [ngModelOptions]="{standalone: true}"/>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label [nzSpan]="5">手机号</nz-form-label>
+              <nz-form-control [nzSpan]="17">
+                <input nz-input [(ngModel)]="editorInfo.phonenumber" [ngModelOptions]="{standalone: true}"/>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label [nzSpan]="5">修改密码</nz-form-label>
+              <nz-form-control [nzSpan]="17">
+                <input nz-input type="password" [(ngModel)]="editorInfo.password" [ngModelOptions]="{standalone: true}"/>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label [nzSpan]="5">确认修改密码</nz-form-label>
+              <nz-form-control [nzSpan]="17">
+                <input nz-input type="password"/>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item nz-row class="register-area">
+              <nz-form-control [nzSpan]="14" [nzOffset]="10">
+                <button nz-button nzType="primary" (click)="update()">修改</button>
+                <button nz-button nzType="default" (click)="cancel()">取消</button>
+              </nz-form-control>
+            </nz-form-item>
+          </form>
+        </nz-card>
+      </nz-row>
+    </ng-template>
+  </nz-content>
+</nz-layout>
