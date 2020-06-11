@@ -442,7 +442,7 @@ func OPTIONSrequest(writer http.ResponseWriter, request *http.Request, next http
 
 func reCAPTCHA(writer http.ResponseWriter, r *http.Request) {
 	resp, err := http.PostForm("https://www.google.com/recaptcha/api/siteverify",
-		url.Values{"secret": {"6Ld6Y3sUAAAAAP2CzuEzQOO5D2kIptaz9YdF_BrI"}, "response": {r.FormValue("captchaResponse")}})
+		url.Values{"secret": {""}, "response": {r.FormValue("captchaResponse")}})
 	if err != nil {
 		log.Println(err)
 	}
